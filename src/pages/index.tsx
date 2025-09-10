@@ -11,6 +11,12 @@ export default function Home() {
     new Cliente('Carlos', 54, '6')
   ]
 
+  function clienteSelecionado(cliente: Cliente) {
+    console.log(cliente.nome)
+  }
+  function clienteExcluido(cliente: Cliente) {
+    console.log(`Excluir ${cliente.nome}`)
+  }
 
   return (
     <div className={`
@@ -20,8 +26,12 @@ export default function Home() {
     bg-gradient-to-r from-blue-500 to-purple-500
      `}>
       <Layout titulo="Cadastro Simples" >
-        <Tabela clientes={clientes}></Tabela>
-      </Layout>     
+        <Tabela clientes={clientes} 
+        clienteSelecionado={clienteSelecionado}
+        clienteExcluido={clienteExcluido}
+         
+         />
+      </Layout>
     </div>
   );
 }
