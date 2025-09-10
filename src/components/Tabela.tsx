@@ -1,5 +1,5 @@
 import type Cliente from '../core/Cliente';
-import { EditIcon, TrashIcon } from './icones';
+import { EditIcon, TrashIcon } from './Icones';
 
 interface TabelaProps {
   clientes: Cliente[];
