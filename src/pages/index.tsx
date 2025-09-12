@@ -1,47 +1,20 @@
-import Cliente from '../core/Cliente';
 import Layout from './../components/Layout';
 import Tabela from './../components/Tabela';
 import Botao from './../components/Botao';
 import Formulario from '../components/Formulario';
-import { useEffect, useState } from 'react';
-import ColecaoCliente from '../backend/db/ColecaoCliente';
-import ClienteRepositorio from '../core/Cliente.repositorio';
+import useClientes from '../hook/useClientes';
 
 export default function Home() {
-
-  const repo: ClienteRepositorio = new ColecaoCliente()
-
-  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio());
-  const [clientes, setClientes] = useState<Cliente[]>([]);
-  const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela');
-
-  useEffect(obterTodos, [])
-  
-  function obterTodos() {
-    repo.obterTodos().then(clientes => {
-      setClientes(clientes)
-      setVisivel('tabela')
-    })
-    
-  }
-
-  function clienteSelecionado(cliente: Cliente) {
-    setCliente(cliente);
-    setVisivel('form');
-  }
-  function clienteExcluido(cliente: Cliente) {
-    console.log(`Excluir ${cliente.nome}`);
-  }
-  
-  function novoCliente() {
-    setCliente(Cliente.vazio());
-    setVisivel('form');
-  }
-
-  async function salvarCliente(cliente: Cliente) {
-    await repo.salvar(cliente)
-    obterTodos();
-  }
+  const {
+    cliente,
+    clientes,
+    novoCliente,
+    salvarCliente,
+    clienteSelecionado,
+    clienteExcluido,
+    tabelaVisivel,
+    exibirTabela
+  } = useClientes();
 
   return (
     <div
@@ -53,7 +26,7 @@ export default function Home() {
      `}
     >
       <Layout titulo="Cadastro Simples">
-        {visivel === 'tabela' ? (
+        {tabelaVisivel ? (
           <>
             <div className={`flex justify-end`}>
               <Botao cor="green" className="mb-4" onClick={novoCliente}>
@@ -70,7 +43,7 @@ export default function Home() {
           <Formulario
             cliente={cliente}
             clienteMudou={salvarCliente}
-            cancelado={() => setVisivel('tabela')}
+            cancelado={exibirTabela}
           ></Formulario>
         )}
       </Layout>
